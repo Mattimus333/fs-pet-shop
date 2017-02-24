@@ -26,8 +26,8 @@ var auth = function(req, res, next) {
     if (!user || !user.name || !user.pass) {
         return unauthorized(res);
     };
-    
-    if (user.name === 'matt' && user.pass === 'isawesome') {
+
+    if (user.name === 'admin' && user.pass === 'meowmix') {
         return next();
     } else {
         return unauthorized(res);
