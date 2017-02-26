@@ -38,7 +38,11 @@ app.disable('x-powered-by');
 
 app.use(morgan('common'));
 
-app.get('/pets', auth, function(req, res) {
+app.use(auth,(req, res, next) => {
+  next();
+})
+
+app.get('/pets', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
             console.error(err.stack);
@@ -51,7 +55,7 @@ app.get('/pets', auth, function(req, res) {
     });
 });
 
-app.get('/pets/:index', auth, function(req, res) {
+app.get('/pets/:index', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
             console.error(err.stack);
@@ -70,7 +74,7 @@ app.get('/pets/:index', auth, function(req, res) {
     });
 });
 
-app.post('/pets', auth, function(req, res) {
+app.post('/pets', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
             console.error(err.stack);
