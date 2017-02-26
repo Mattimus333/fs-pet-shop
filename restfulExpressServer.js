@@ -24,7 +24,11 @@ var auth = function(req, res, next) {
 }
 
 var pets = require('./routes/pets');
-app.use('/', auth, pets);
+app.use(auth, pets);
+
+app.use(function(req, res) {
+  res.sendStatus(404);
+});
 
 
 app.listen(port, function() {

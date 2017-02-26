@@ -149,8 +149,4 @@ router.delete('/pets/:index', function(req, res) {
     });
 });
 
-router.use(function(req, res) {
-    res.sendStatus(404);
-});
-
 module.exports = router;
