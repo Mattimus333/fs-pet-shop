@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var fs = require('fs');
-var path = require('path');
-var petsPath = path.join(__dirname, '../pets.json');
+const fs = require('fs');
+const path = require('path');
+const petsPath = path.join(__dirname, '../pets.json');
 
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
@@ -20,7 +20,6 @@ router.get('/pets', function(req, res) {
         }
 
         var pets = JSON.parse(petsJSON);
-
         return res.send(pets);
     });
 });
@@ -40,7 +39,6 @@ router.get('/pets/:index', function(req, res) {
             return res.sendStatus(404);
         }
 
-        res.set('Content-Type', 'application/json');
         res.send(pets[index]);
     });
 });
@@ -64,7 +62,6 @@ router.post('/pets', function(req, res) {
             newPet.kind = kind;
             newPet.name = name;
             pets.push(newPet);
-            res.set('Content-Type', 'application/json');
             res.send(newPet);
         } else {
             res.sendStatus(400);
@@ -82,6 +79,9 @@ router.post('/pets', function(req, res) {
 });
 
 router.patch('/pets/:index', function(req, res) {
+    if (id < 0 || Number.isNaN(id)) {
+      return res.sendStatus(404);
+    }
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
             console.error(err.stack);
@@ -94,7 +94,7 @@ router.patch('/pets/:index', function(req, res) {
         var name = req.body.name;
         var pets = JSON.parse(petsJSON);
 
-        if (index < 0 || index >= pets.length || Number.isNaN(index)) {
+        if (index >= pets.length) {
             return res.sendStatus(404);
         } else {
             if (kind) {
@@ -106,7 +106,6 @@ router.patch('/pets/:index', function(req, res) {
             if (name) {
                 pets[index].name = name;
             }
-            res.set('Content-Type', 'application/json');
             res.send(pets[index]);
         }
 
@@ -134,7 +133,6 @@ router.delete('/pets/:index', function(req, res) {
         if (index < 0 || index >= pets.length || Number.isNaN(index)) {
             return res.sendStatus(404);
         } else {
-            res.set('Content-Type', 'application/json');
             res.send(pets.splice(index, 1)[0]);
         }
 

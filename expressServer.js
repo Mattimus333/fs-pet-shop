@@ -43,8 +43,6 @@ app.get('/pets/:index', function(req, res) {
     if (index < 0 || index >= pets.length || Number.isNaN(index)){
       return res.sendStatus(404);
     }
-
-    res.set('Content-Type', 'application/json');
     res.send(pets[index]);
   });
 });
@@ -67,7 +65,6 @@ app.post('/pets', function(req, res) {
       newPet.kind = kind;
       newPet.name = name;
       pets.push(newPet);
-      res.set('Content-Type', 'application/json');
       res.send(newPet);
     }
     else{
