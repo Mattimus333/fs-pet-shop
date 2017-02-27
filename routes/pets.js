@@ -79,45 +79,45 @@ router.post('/pets', function(req, res) {
 });
 
 router.patch('/pets/:index', function(req, res) {
-    if (id < 0 || Number.isNaN(id)) {
+  var index = Number.parseInt(req.params.index);
+    if (index < 0 || Number.isNaN(index)) {
       return res.sendStatus(404);
-    }
-    fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
+    } else {
+      fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
-            console.error(err.stack);
-            return res.sendStatus(500);
+          console.error(err.stack);
+          return res.sendStatus(500);
         }
 
-        var index = Number.parseInt(req.params.index);
         var age = parseInt(req.body.age);
         var kind = req.body.kind;
         var name = req.body.name;
         var pets = JSON.parse(petsJSON);
 
         if (index >= pets.length) {
-            return res.sendStatus(404);
+          return res.sendStatus(404);
         } else {
-            if (kind) {
-                pets[index].kind = kind;
-            }
-            if (age) {
-                pets[index].age = age;
-            }
-            if (name) {
-                pets[index].name = name;
-            }
-            res.send(pets[index]);
+          if (kind) {
+            pets[index].kind = kind;
+          }
+          if (age) {
+            pets[index].age = age;
+          }
+          if (name) {
+            pets[index].name = name;
+          }
+          res.send(pets[index]);
         }
 
         var petsJSON = JSON.stringify(pets);
         fs.writeFile(petsPath, petsJSON, function(writeErr) {
-            if (writeErr) {
-                console.log(writeErr.stack);
-                res.sendStatus(500);
-            }
+          if (writeErr) {
+            console.log(writeErr.stack);
+            res.sendStatus(500);
+          }
         });
-
-    });
+      });    
+    }
 });
 
 router.delete('/pets/:index', function(req, res) {
