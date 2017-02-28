@@ -3,7 +3,9 @@ const router = express.Router();
 
 const fs = require('fs');
 const path = require('path');
-const petsPath = path.join(__dirname, '../pets.json');
+// const petsPath = './models/pets.json';
+var petsPath = path.join(__dirname, '..', '..', 'models', 'pets.json');
+console.log("THIS IS HAPPENING!", petsPath)
 
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
@@ -13,6 +15,7 @@ router.use(bodyParser.urlencoded({
 
 //gets all pets
 router.get('/pets', function(req, res) {
+    console.log(petsPath);
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
             console.error(err.stack);
@@ -20,6 +23,7 @@ router.get('/pets', function(req, res) {
         }
 
         var pets = JSON.parse(petsJSON);
+        console.log(pets);
         return res.send(pets);
     });
 });

@@ -23,7 +23,7 @@ var auth = function(req, res, next) {
     };
 }
 
-var pets = require('./routes/pets');
+var pets = require('./controllers/routes/pets');
 app.use(auth, pets);
 
 app.use(function(req, res) {

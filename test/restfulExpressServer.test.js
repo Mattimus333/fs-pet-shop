@@ -21,7 +21,7 @@ describe('pets restfulExpressServer', () => {
     }];
 
     mockFS({
-      'pets.json': JSON.stringify(petsArr)
+      'models/pets.json': JSON.stringify(petsArr)
     });
   });
 
