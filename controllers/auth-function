@@ -1,0 +1,26 @@
+//import basic-auth module
+const BASICAUTH = require('basic-auth');
+//create function to export
+var auth = function(req, res, next) {
+
+    //function to run when an unauthorized request is attempted
+    function unauthorized(res) {
+        res.set('WWW-Authenticate', 'Basic realm="Required"');
+        return res.send(401);
+    };
+
+    //set the user as a variable
+    var user = BASICAUTH(req);
+    //check if all credentials are user fields are entered, else return unauthorized
+    if (!user || !user.name || !user.pass) {
+        return unauthorized(res);
+    };
+    //check if the user credentials are correct, else return unauthorized
+    if (user.name === 'admin' && user.pass === 'meowmix') {
+        return next();
+    } else {
+        return unauthorized(res);
+    };
+};
+//export function
+module.exports = auth;

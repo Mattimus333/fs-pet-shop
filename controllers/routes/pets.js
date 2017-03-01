@@ -1,6 +1,6 @@
+//import all modules!
 const express = require('express');
 const router = express.Router();
-
 const fs = require('fs');
 const path = require('path');
 // const petsPath = './models/pets.json';
@@ -47,7 +47,7 @@ router.get('/pets/:index', function(req, res) {
     });
 });
 
-//
+//posts a new pet to database
 router.post('/pets', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
@@ -82,6 +82,7 @@ router.post('/pets', function(req, res) {
     });
 });
 
+//updates pet properties at a certain index
 router.patch('/pets/:index', function(req, res) {
     var index = Number.parseInt(req.params.index);
     if (index < 0 || Number.isNaN(index)) {
@@ -124,6 +125,7 @@ router.patch('/pets/:index', function(req, res) {
     }
 });
 
+//deletes a pet at the specified index
 router.delete('/pets/:index', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {

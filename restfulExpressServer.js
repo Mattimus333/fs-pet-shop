@@ -1,38 +1,23 @@
 'use strict';
 
-var express = require('express');
-var app = express();
-var basicAuth = require('basic-auth');
-var port = process.env.PORT || 8000;
-
-var auth = function(req, res, next) {
-    function unauthorized(res) {
-        res.set('WWW-Authenticate', 'Basic realm="Required"');
-        return res.send(401);
-    };
-
-    var user = basicAuth(req);
-    if (!user || !user.name || !user.pass) {
-        return unauthorized(res);
-    };
-
-    if (user.name === 'admin' && user.pass === 'meowmix') {
-        return next();
-    } else {
-        return unauthorized(res);
-    };
-}
-
-var pets = require('./controllers/routes/pets');
-app.use(auth, pets);
-
-app.use(function(req, res) {
+//import and start an express app
+const EXPRESS = require('express');
+const APP = EXPRESS();
+//set port
+const PORT = process.env.PORT || 8000;
+//imports auth function
+const AUTH = require('./controllers/auth-function');
+//imports the routing file and routes all requests from pets
+const PETS = require('./controllers/routes/pets');
+APP.use(AUTH, PETS);
+//404s requests to the wrong path
+APP.use(function(req, res) {
   res.sendStatus(404);
 });
-
-
-app.listen(port, function() {
-    console.log('listening on port', port);
+//turn on server
+APP.listen(PORT, function() {
+    console.log('listening on port', PORT);
 });
 
-module.exports = app;
+//export required for test file
+module.exports = APP;
